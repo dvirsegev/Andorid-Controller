@@ -14,8 +14,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ControllerActivity extends AppCompatActivity {
+public class ControllerActivity extends AppCompatActivity implements ObserverInterface {
+    String message;
+    Tcp tcp = new Tcp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,28 +29,19 @@ public class ControllerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String ip = intent.getStringExtra("Ip");
         String port = intent.getStringExtra("Port");
-        setContentView(new DrawShapes(this));
-//        conncetServer(ip,port);
-    }
-
-    public void conncetServer(String ip, String port) {
         try {
-            InetAddress serverAddr = InetAddress.getByName(ip);
-            Socket socket = new Socket(ip, Integer.parseInt(port));
-            try {
-                BufferedWriter writer;
-                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//            writer.write();
-                writer.flush();
-            } catch (IOException e) {
-                Log.e("TCP", "S: Error", e);
-            } finally {
-                socket.close();
-            }
+            tcp.execute(ip, port, null);
         } catch (Exception e) {
-            Log.e("TCP", "C: Error", e);
+            System.out.println(e.toString());
         }
+        DrawShapes drawShapes = new DrawShapes(this);
+        drawShapes.addToObserver(this);
+        setContentView(drawShapes);
 
     }
 
+    @Override
+    public void update() {
+        tcp.Send("hi");
+    }
 }
