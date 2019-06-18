@@ -41,7 +41,7 @@ public class ControllerActivity extends AppCompatActivity implements ObserverInt
     }
 
     @Override
-    public void update() {
-        tcp.Send("hi");
+    public void update(String s) {
+        tcp.Send(s);
     }
 }

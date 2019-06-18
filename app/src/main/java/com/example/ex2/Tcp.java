@@ -5,10 +5,7 @@ import android.util.Log;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
